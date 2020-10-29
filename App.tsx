@@ -5,8 +5,11 @@
  * @format
  * @flow strict-local
  */
-
+import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,9 +19,16 @@ import {
   StatusBar,
   Alert,
   Image,
-  FlatList
+  FlatList,
+  Button
 } from 'react-native';
+import { Header } from 'react-native/Libraries/NewAppScreen';
 import { CocktailsList } from './app/components/CocktailsList';
+import { Home } from './app/screens/Home';
+import { Filters } from './app/screens/Filters';
+import { FilterImage } from './app/components/FilterImage';
+
+const Stack = createStackNavigator();
 
 const App: () => React$Node = () => {
 
@@ -31,26 +41,32 @@ const App: () => React$Node = () => {
       .catch(err => Alert.alert(err));
   };
 
-  // const getData = () => {
-  //   fetch('https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Ordinary_Drink')
-  //     .then(res => res.json())
-  //     .then(cocktails => setCocktail(cocktails.drinks))
-  //     .catch(err => Alert.alert(err));
-  // };
-
   useEffect(() => {
-    // getData();
     getFilters();
   }, []);
 
   return (
-    <View>
-      {filters.map(t => <CocktailsList filter={t.strCategory}/>)}
-    </View>
-    /* {cocktails.map(text => <Image key={text.idDrink} source={{ uri: text.strDrinkThumb, width: 100, height: 100 }} />)} */
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Drinks">
+        <Stack.Screen 
+        name="Drinks" 
+        component={Home}
+        options={({navigation})=>({
+          headerRight:()=>(
+            <Button onPress={()=> navigation.navigate('Filters')} title="Filters"/>
+          )
+        })}
+        /> 
+        
+        <Stack.Screen name="Filters" component={Filters} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
+{/* <View>
+        {filters.map(t => <CocktailsList filter={t.strCategory} key={t.strCategory} />)}
+      </View> */}
 
 const styles = StyleSheet.create({
 
