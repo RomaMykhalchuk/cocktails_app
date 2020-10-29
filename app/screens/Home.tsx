@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Text, Alert, View, FlatList } from 'react-native';
+import { Text, Alert, View, FlatList, Button, SectionList } from 'react-native';
 import { CocktailsList } from '../components/CocktailsList';
+import { Filter } from '../components/Filter';
 
 
-export const Home = ({filters}) => {
+export const Home = ({ filters, callback }) => {
 
     return (
         <>
             <View>
-                {filters.map(t => <CocktailsList filter={t.strCategory} key={t.strCategory} />)}
+            <Button onPress={callback} title="delete"/>
+
+                <FlatList
+                    data={filters}
+                    keyExtractor={(item) => item.strCategory}
+                    renderItem={({ item }) => <CocktailsList filter={item.strCategory} />} 
+                />
             </View>
         </>
     );

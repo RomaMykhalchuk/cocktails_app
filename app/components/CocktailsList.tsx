@@ -14,15 +14,22 @@ export const CocktailsList = ({ filter }) => {
             .catch(err => Alert.alert(err));
     };
 
-    useEffect(() => getData(), []);
+    useEffect(() => {
+        let mounted = true;
+        if (mounted) {
+            getData();
+        }
+        return () => mounted = false;
+
+    }, []);
 
     return (
         <View style={{ paddingHorizontal: 20 }}>
             <Text style={styles.groupTitle}>{filter}</Text>
             <FlatList
-                keyExtractor={(item)=> item.idDrink}
+                keyExtractor={(item) => item.idDrink}
                 data={cocktails}
-                renderItem={({ item }) => <CocktailCard image={item.strDrinkThumb} title={item.strDrink}/>} />
+                renderItem={({ item }) => <CocktailCard image={item.strDrinkThumb} title={item.strDrink} />} />
         </View>
     );
 };

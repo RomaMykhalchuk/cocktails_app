@@ -9,7 +9,8 @@ import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Icon } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 import {
   SafeAreaView,
@@ -41,6 +42,15 @@ const App: () => React$Node = () => {
       .catch(err => alert(err));
   };
 
+  const removeSmth = () => {
+    setFilter((prevState)=> {
+      prevState.shift();
+      return prevState;
+    });
+
+   
+  };
+
   useEffect(() => {
     getFilters();
   }, []);
@@ -52,10 +62,10 @@ const App: () => React$Node = () => {
           name="Drinks"
           options={({ navigation }) => ({
             headerRight: () => (
-              <Icon onPress={() => navigation.navigate('Filters')} name="filter" />
+              <Button onPress={() => navigation.navigate('Filters')}  title="totop" />
             )
           })}>
-          {() => <Home filters={filters} />}
+          {() => <Home filters={filters} callback={removeSmth} />}
         </Stack.Screen>
         <Stack.Screen name="Filters">
           {() => <Filters filters={filters} />}
