@@ -9,6 +9,7 @@ import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { Icon } from 'react-native-elements'
 
 import {
   SafeAreaView,
@@ -31,14 +32,13 @@ import { FilterImage } from './app/components/FilterImage';
 const Stack = createStackNavigator();
 
 const App: () => React$Node = () => {
-
   const [filters, setFilter] = useState([]);
 
   const getFilters = () => {
     fetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list')
       .then(res => res.json())
       .then(filters => setFilter(filters.drinks))
-      .catch(err => Alert.alert(err));
+      .catch(err => alert(err));
   };
 
   useEffect(() => {
@@ -48,25 +48,24 @@ const App: () => React$Node = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Drinks">
-        <Stack.Screen 
-        name="Drinks" 
-        component={Home}
-        options={({navigation})=>({
-          headerRight:()=>(
-            <Button onPress={()=> navigation.navigate('Filters')} title="Filters"/>
-          )
-        })}
-        /> 
-        
-        <Stack.Screen name="Filters" component={Filters} />
+        <Stack.Screen
+          name="Drinks"
+          options={({ navigation }) => ({
+            headerRight: () => (
+              <Icon onPress={() => navigation.navigate('Filters')} name="filter" />
+            )
+          })}>
+          {() => <Home filters={filters} />}
+        </Stack.Screen>
+        <Stack.Screen name="Filters">
+          {() => <Filters filters={filters} />}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
-{/* <View>
-        {filters.map(t => <CocktailsList filter={t.strCategory} key={t.strCategory} />)}
-      </View> */}
+
 
 const styles = StyleSheet.create({
 

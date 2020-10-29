@@ -1,11 +1,15 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, Alert, View, FlatList } from 'react-native';
+import { CocktailsList } from '../components/CocktailsList';
 
-export const Home = () => {
+
+export const Home = ({filters}) => {
+
     return (
         <>
-            <Text>Home</Text>
-   
+            <View>
+                {filters.map(t => <CocktailsList filter={t.strCategory} key={t.strCategory} />)}
+            </View>
         </>
     );
 };

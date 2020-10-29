@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Text } from 'react-native';
+import { Filter } from '../components/Filter';
 
-export const Filters = () => {
+export const Filters = ({ filters }) => {
+    const [checkedFilters, setFilter ] = useState([]);
+
     return (
         <>
-            <Text>Filters</Text>
-            <Text>Click Back</Text>
+            {filters.map(f => <Filter filter={f.strCategory} key={f.strCategory}/>)}
         </>
     );
 };

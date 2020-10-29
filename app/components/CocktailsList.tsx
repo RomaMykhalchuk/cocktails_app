@@ -17,9 +17,12 @@ export const CocktailsList = ({ filter }) => {
     useEffect(() => getData(), []);
 
     return (
-        <View style={{paddingHorizontal: 20}}>
+        <View style={{ paddingHorizontal: 20 }}>
             <Text style={styles.groupTitle}>{filter}</Text>
-            <FlatList data={cocktails} renderItem={({ item }) => <CocktailCard image={item.strDrinkThumb} title={item.strDrink} key={item.idDrink} />} />
+            <FlatList
+                keyExtractor={(item)=> item.idDrink}
+                data={cocktails}
+                renderItem={({ item }) => <CocktailCard image={item.strDrinkThumb} title={item.strDrink}/>} />
         </View>
     );
 };
