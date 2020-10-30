@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 
-export const CocktailCard = ({ image, title }) => {
+export const CocktailCard = ({ strDrinkThumb, strDrink }) => {
     return (
         <View style={styles.cockTailCard}>
-            <Image source={{ uri: image, width: 100, height: 100 }} />
-            <Text style={styles.cocktailTitle}>{title}</Text>
+            <Image source={{ uri: strDrinkThumb, width: 100, height: 100 }} />
+            <Text style={styles.cocktailTitle}>{strDrink}</Text>
         </View>
     );
 };

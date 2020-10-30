@@ -33,29 +33,7 @@ import { FilterImage } from './app/components/FilterImage';
 const Stack = createStackNavigator();
 
 const App: () => React$Node = () => {
-  const [filters, setFilter] = useState([]);
-
-  const getFilters = () => {
-    fetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list')
-      .then(res => res.json())
-      .then(filters => setFilter(filters.drinks))
-      .catch(err => alert(err));
-  };
-
-  const removeSmth = () => {
-    setFilter((prevState)=> {
-      prevState.shift();
-      return prevState;
-    });
-
-   
-  };
-
-  useEffect(() => {
-    getFilters();
-  }, []);
-
-  return (
+return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Drinks">
         <Stack.Screen
@@ -65,11 +43,11 @@ const App: () => React$Node = () => {
               <Button onPress={() => navigation.navigate('Filters')}  title="totop" />
             )
           })}>
-          {() => <Home filters={filters} callback={removeSmth} />}
+          {() => <Home/>}
         </Stack.Screen>
-        <Stack.Screen name="Filters">
+        {/* <Stack.Screen name="Filters">
           {() => <Filters filters={filters} />}
-        </Stack.Screen>
+        </Stack.Screen> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
