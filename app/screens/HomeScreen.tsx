@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { Text, Alert, View, FlatList, Button, SectionList } from 'react-native';
+import { useSelector } from 'react-redux';
 import { CocktailsList } from '../components/CocktailsList';
 import { Filter } from '../components/Filter';
 import { CocktailCard } from '../components/CocktailCard';
 
-const allFilters = [
-    'Ordinary Drink',
-    'Cocktail',
-    'Milk / Float / Shake',
-    'Other/Unknown',
-    'Cocoa',
-    'Shot',
-    'Coffee / Tea',
-    'Homemade Liqueur',
-    'Punch / Party Drink',
-    'Beer',
-    'Soft Drink / Soda'
-];
+// const allFilters = [
+//     'Ordinary Drink',
+//     'Cocktail',
+//     'Milk / Float / Shake',
+//     'Other/Unknown',
+//     'Cocoa',
+//     'Shot',
+//     'Coffee / Tea',
+//     'Homemade Liqueur',
+//     'Punch / Party Drink',
+//     'Beer',
+//     'Soft Drink / Soda'
+// ];
 
 
 export const HomeScreen = () => {
-    const [filters, setFilter] = useState([...allFilters]);
+    const allFilters = useSelector(state => state.filters);
+
+    const [filters, setFilter] = useState(allFilters);
     const [page, setPage] = useState(0);
     const [serverData, serverDataLoaded] = useState([]);
     const [clientData, setClientData] = useState([]);
@@ -29,13 +32,14 @@ export const HomeScreen = () => {
 
     const getServerData = (p) => {
         console.log(p);
-        fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${filters[p]}`)
+        // const {strCategory} = allFilters[p];
+        fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Ordinary Drink`)
             .then(res => res.json())
             .then(data => {
                serverDataLoaded(data.drinks.map(cocktail => {
                    return {
                        ...cocktail,
-                       category: filters[p],
+                       category: 'zaebal',
                    }
                }));
                 return data.drinks;
@@ -68,15 +72,14 @@ export const HomeScreen = () => {
 
     return (
         <View>
-          
-            {/* <Text>{category}</Text> */}
-            <FlatList
+          <FlatList
                 data={clientData}
                 // refreshing={refresh}
                 renderItem={({ item }) => <CocktailCard {...item} />}
                 onEndReached={handleLoadMore}
                 keyExtractor={(item)=> item.idDrink}
                 onEndReachedThreshold={0.1}
+                
                 // onRefresh={() => onRefresh()}
             />
         </View>

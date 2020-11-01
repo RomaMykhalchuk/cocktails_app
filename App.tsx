@@ -10,17 +10,14 @@ import React, { useState, useEffect } from 'react';
 import { Provider, useDispatch } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 import { setFilters } from './app/store/reducers/filtersReducer';
 import store from './app/store/store.js';
 
 import { Button } from 'react-native';
-import { Header } from 'react-native/Libraries/NewAppScreen';
-import { CocktailsList } from './app/components/CocktailsList';
 import { HomeScreen } from './app/screens/HomeScreen';
 import { FiltersScreen } from './app/screens/FiltersScreen';
-import { FilterImage } from './app/components/FilterImage';
 
 const Stack = createStackNavigator();
 
@@ -39,8 +36,7 @@ const App: () => React$Node = () => {
   }, []);
 
   return (
-
-    <Provider store={store}>
+  <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Drinks">
           <Stack.Screen
@@ -58,10 +54,6 @@ const App: () => React$Node = () => {
 
   );
 };
-
-// const styles = StyleSheet.create({
-
-// });
 
 const AppWrapper = () => (
   <Provider store={store}>
