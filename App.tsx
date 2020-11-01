@@ -7,56 +7,66 @@
  */
 import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
+import { Provider, useDispatch } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import { setFilters } from './app/store/reducers/filtersReducer';
+import store from './app/store/store.js';
 
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-  Alert,
-  Image,
-  FlatList,
-  Button
-} from 'react-native';
+import { Button } from 'react-native';
 import { Header } from 'react-native/Libraries/NewAppScreen';
 import { CocktailsList } from './app/components/CocktailsList';
-import { Home } from './app/screens/Home';
-import { Filters } from './app/screens/Filters';
+import { HomeScreen } from './app/screens/HomeScreen';
+import { FiltersScreen } from './app/screens/FiltersScreen';
 import { FilterImage } from './app/components/FilterImage';
 
 const Stack = createStackNavigator();
 
 const App: () => React$Node = () => {
-return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Drinks">
-        <Stack.Screen
-          name="Drinks"
-          options={({ navigation }) => ({
-            headerRight: () => (
-              <Button onPress={() => navigation.navigate('Filters')}  title="totop" />
-            )
-          })}>
-          {() => <Home/>}
-        </Stack.Screen>
-        {/* <Stack.Screen name="Filters">
-          {() => <Filters filters={filters} />}
-        </Stack.Screen> */}
-      </Stack.Navigator>
-    </NavigationContainer>
+  const dispatch = useDispatch();
+
+  const getFilters = () => {
+    fetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list')
+      .then(res => res.json())
+      .then(filters => dispatch(setFilters(filters.drinks)))
+      .catch(err => console.log(err));
+  };
+
+  useEffect(() => {
+    getFilters();
+  }, []);
+
+  return (
+
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Drinks">
+          <Stack.Screen
+            name="Drinks"
+            component={HomeScreen}
+            options={({ navigation }) => ({
+              headerRight: () => (
+                <Button onPress={() => navigation.navigate('Filters')} title="totop" />
+              )
+            })} />
+          <Stack.Screen name="Filters" component={FiltersScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
+
   );
 };
 
+// const styles = StyleSheet.create({
 
+// });
 
-const styles = StyleSheet.create({
+const AppWrapper = () => (
+  <Provider store={store}>
+    <App />
+  </Provider>
+)
 
-});
-
-export default App;
+export default AppWrapper;

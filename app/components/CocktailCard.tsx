@@ -1,11 +1,14 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 
-export const CocktailCard = ({ strDrinkThumb, strDrink }) => {
+export const CocktailCard = ({ strDrinkThumb, strDrink, category }) => {
     return (
         <View style={styles.cockTailCard}>
             <Image source={{ uri: strDrinkThumb, width: 100, height: 100 }} />
-            <Text style={styles.cocktailTitle}>{strDrink}</Text>
+            <View style={{ flexDirection: 'column' }}>
+                <Text style={styles.cocktailTitle}>{strDrink}</Text>
+                <Text>{(category)}</Text>
+            </View>
         </View>
     );
 };
@@ -22,6 +25,6 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom:40
+        marginBottom: 40
     }
 });
