@@ -1,51 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import { Text, Alert, View, FlatList, Button, SectionList } from 'react-native';
-import { useSelector } from 'react-redux';
-import { CocktailsList } from '../components/CocktailsList';
-import { Filter } from '../components/Filter';
+import { View, FlatList } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import { CocktailCard } from '../components/CocktailCard';
-
-// const allFilters = [
-//     'Ordinary Drink',
-//     'Cocktail',
-//     'Milk / Float / Shake',
-//     'Other/Unknown',
-//     'Cocoa',
-//     'Shot',
-//     'Coffee / Tea',
-//     'Homemade Liqueur',
-//     'Punch / Party Drink',
-//     'Beer',
-//     'Soft Drink / Soda'
-// ];
-
+import { setFilters } from '../store/reducers/filtersReducer';
 
 export const HomeScreen = () => {
+    const dispatch = useDispatch();
     const allFilters = useSelector(state => state.filters);
 
-    const [filters, setFilter] = useState(allFilters);
     const [page, setPage] = useState(0);
     const [serverData, serverDataLoaded] = useState([]);
     const [clientData, setClientData] = useState([]);
-    // const [loadmore, setLoadmore] = useState(false);
-    // const [refresh, setRefresh] = useState(false);
+
+    const getFilters = () => {
+        fetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list')
+            .then(res => res.json())
+            .then(filters => {
+                dispatch(setFilters([...filters.drinks]))
+                return filters;
+            })
+            .catch(err => console.log(err));
+    };
 
     const getServerData = (p) => {
-        console.log(p);
-        // const {strCategory} = allFilters[p];
-        fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Ordinary Drink`)
+        fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${allFilters[p]?.strCategory}`)
             .then(res => res.json())
             .then(data => {
-               serverDataLoaded(data.drinks.map(cocktail => {
-                   return {
-                       ...cocktail,
-                       category: 'zaebal',
-                   }
-               }));
+                serverDataLoaded(data.drinks.map(cocktail => {
+                    return {
+                        ...cocktail,
+                        category: 'hh',
+                    }
+                }));
                 return data.drinks;
             })
             .catch(err => console.log(err))
     };
+
+    useEffect(() => {
+        getFilters()
+    }, []);
 
     useEffect(() => {
         getServerData(page);
@@ -56,31 +50,24 @@ export const HomeScreen = () => {
     }, [serverData]);
 
     const handleLoadMore = () => {
-        if(page !== filters.length - 1) {
+        if (page !== allFilters.length - 1) {
             setPage(page + 1);
         } else {
-            alert(clientData.length);
+            alert('No more cocktails');
         }
-        // console.log(clientData.length);
     };
-
-    // const onRefresh = () => {
-    //     setClientData([]);
-    //     setPage(0);
-    //     setRefresh(true);
-    // };
 
     return (
         <View>
-          <FlatList
+            <FlatList
                 data={clientData}
                 // refreshing={refresh}
                 renderItem={({ item }) => <CocktailCard {...item} />}
                 onEndReached={handleLoadMore}
-                keyExtractor={(item)=> item.idDrink}
+                keyExtractor={(item) => item.idDrink}
                 onEndReachedThreshold={0.1}
-                
-                // onRefresh={() => onRefresh()}
+
+            // onRefresh={() => onRefresh()}
             />
         </View>
     );

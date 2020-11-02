@@ -10,7 +10,8 @@ import React, { useState, useEffect } from 'react';
 import { Provider, useDispatch } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import { Icon } from 'react-native-elements'
+// import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { setFilters } from './app/store/reducers/filtersReducer';
 import store from './app/store/store.js';
@@ -22,18 +23,18 @@ import { FiltersScreen } from './app/screens/FiltersScreen';
 const Stack = createStackNavigator();
 
 const App: () => React$Node = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const getFilters = () => {
-    fetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list')
-      .then(res => res.json())
-      .then(filters => dispatch(setFilters(filters.drinks)))
-      .catch(err => console.log(err));
-  };
+  // const getFilters = () => {
+  //   fetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list')
+  //     .then(res => res.json())
+  //     .then(filters => dispatch(setFilters(filters.drinks)))
+  //     .catch(err => console.log(err));
+  // };
 
-  useEffect(() => {
-    getFilters();
-  }, []);
+  // useEffect(() => {
+  //   getFilters();
+  // }, []);
 
   return (
   <Provider store={store}>
@@ -44,7 +45,8 @@ const App: () => React$Node = () => {
             component={HomeScreen}
             options={({ navigation }) => ({
               headerRight: () => (
-                <Button onPress={() => navigation.navigate('Filters')} title="totop" />
+                 <Button onPress={() => navigation.navigate('Filters')} title="totop" />
+                // <Icon name='filter_alt' onPress={() => navigation.navigate('Filters')}/>
               )
             })} />
           <Stack.Screen name="Filters" component={FiltersScreen} />

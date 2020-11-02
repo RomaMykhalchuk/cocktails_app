@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { CheckBox } from 'react-native-elements';
-import { Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { hanldeFilter } from '../store/reducers/selectedFiltersReducer';
 
-export const Filter = ({ name}) => {
-  
+export const Filter = ({ name }) => {
+
     const selectedFilters = useSelector(state => state.selectedFilters);
     const dispatch = useDispatch();
-    
+
     const [isChecked, setChecked] = useState(false);
 
     const filterHandler = () => {
@@ -16,8 +15,8 @@ export const Filter = ({ name}) => {
         const idx = selectedFilters.indexOf(name);
         dispatch(hanldeFilter(name, idx));
     };
-    
-return (
+
+    return (
         <>
             <CheckBox
                 title={name}

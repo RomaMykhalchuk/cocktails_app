@@ -7,7 +7,7 @@ export const CocktailCard = ({ strDrinkThumb, strDrink, category }) => {
             <Image source={{ uri: strDrinkThumb, width: 100, height: 100 }} />
             <View style={{ flexDirection: 'column' }}>
                 <Text style={styles.cocktailTitle}>{strDrink}</Text>
-                <Text>{(category)}</Text>
+                <Text>sdasdasdasdasdsadsa</Text>
             </View>
         </View>
     );
